@@ -1,0 +1,20 @@
+{
+  "mint": {
+    "name": "Mint",
+    "description": "Fresh green, graphite surfaces. The original proposed palette.",
+    "dark": {"background":"#0F1115","surface":"#171A21","variant":"#1F2430","primary":"#4ADE80","onPrimary":"#082313","secondary":"#60A5FA","text":"#E6E8EE","muted":"#9AA3B2","error":"#F87171"},
+    "light": {"background":"#F5F7FA","surface":"#FFFFFF","variant":"#E8EDF3","primary":"#166534","onPrimary":"#FFFFFF","secondary":"#1D4ED8","text":"#18211C","muted":"#52605A","error":"#B91C1C"}
+  },
+  "glacier": {
+    "name": "Glacier",
+    "description": "Cool blue, deep navy surfaces. Calm and technical.",
+    "dark": {"background":"#0C121C","surface":"#131E2B","variant":"#1C2A3B","primary":"#7DD3FC","onPrimary":"#082032","secondary":"#A5B4FC","text":"#EAF2FA","muted":"#A0AEC0","error":"#F87171"},
+    "light": {"background":"#F4F7FB","surface":"#FFFFFF","variant":"#E6EDF7","primary":"#075985","onPrimary":"#FFFFFF","secondary":"#4338CA","text":"#182232","muted":"#526176","error":"#B91C1C"}
+  },
+  "orchid": {
+    "name": "Orchid",
+    "description": "Soft violet, plum surfaces. Expressive and relaxed.",
+    "dark": {"background":"#13101B","surface":"#1D1828","variant":"#2A2238","primary":"#C4B5FD","onPrimary":"#21153D","secondary":"#67E8F9","text":"#F0EAF8","muted":"#AEA3BE","error":"#F87171"},
+    "light": {"background":"#F8F5FC","surface":"#FFFFFF","variant":"#EEE7F6","primary":"#6D28D9","onPrimary":"#FFFFFF","secondary":"#0E7490","text":"#241A30","muted":"#6C5879","error":"#B91C1C"}
+  }
+}

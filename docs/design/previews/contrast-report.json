@@ -1,0 +1,56 @@
+{
+  "mint-dark": {
+    "text/background": 15.42,
+    "text/surface": 14.21,
+    "text/variant": 12.67,
+    "muted/background": 7.43,
+    "muted/surface": 6.84,
+    "muted/variant": 6.1,
+    "onPrimary/primary": 9.56
+  },
+  "mint-light": {
+    "text/background": 15.37,
+    "text/surface": 16.49,
+    "text/variant": 14.01,
+    "muted/background": 6.15,
+    "muted/surface": 6.6,
+    "muted/variant": 5.61,
+    "onPrimary/primary": 7.13
+  },
+  "glacier-dark": {
+    "text/background": 16.61,
+    "text/surface": 14.88,
+    "text/variant": 12.87,
+    "muted/background": 8.32,
+    "muted/surface": 7.46,
+    "muted/variant": 6.45,
+    "onPrimary/primary": 9.97
+  },
+  "glacier-light": {
+    "text/background": 14.88,
+    "text/surface": 15.99,
+    "text/variant": 13.57,
+    "muted/background": 5.87,
+    "muted/surface": 6.31,
+    "muted/variant": 5.35,
+    "onPrimary/primary": 7.56
+  },
+  "orchid-dark": {
+    "text/background": 15.95,
+    "text/surface": 14.69,
+    "text/variant": 12.88,
+    "muted/background": 7.86,
+    "muted/surface": 7.24,
+    "muted/variant": 6.34,
+    "onPrimary/primary": 9.18
+  },
+  "orchid-light": {
+    "text/background": 15.38,
+    "text/surface": 16.59,
+    "text/variant": 13.75,
+    "muted/background": 5.88,
+    "muted/surface": 6.35,
+    "muted/variant": 5.26,
+    "onPrimary/primary": 7.1
+  }
+}
