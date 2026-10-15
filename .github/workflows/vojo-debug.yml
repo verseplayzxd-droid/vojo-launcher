@@ -1,0 +1,71 @@
+name: Vojo debug build
+
+on:
+  push:
+    branches-ignore: ['l10n_v3_openjdk']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: vojo-debug-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  debug:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: false
+      - name: Fetch pinned build modules over HTTPS
+        run: git -c url.https://github.com/.insteadOf=git@github.com: submodule update --init --recursive MioLibPatcher androidnsbypass
+      - name: Set up Java 8 compiler
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: '8'
+      - name: Remember Java 8 compiler
+        run: echo "VOJO_JDK8=$JAVA_HOME" >> "$GITHUB_ENV"
+      - name: Set up Java 21 build JVM
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Install declared Android tools
+        run: sdkmanager 'platforms;android-37.0' 'platforms;android-36.1' 'build-tools;36.0.0' 'ndk;27.3.13750724' 'ndk;28.2.13676358' 'cmake;3.22.1'
+      - name: Build source debug APK
+        run: |
+          chmod +x gradlew
+          ./gradlew :app_pojavlauncher:assembleDebug --no-daemon --stacktrace "-Dorg.gradle.java.installations.paths=$VOJO_JDK8"
+      - name: Verify APK and checksum
+        run: |
+          apk=app_pojavlauncher/build/outputs/apk/debug/app_pojavlauncher-debug.apk
+          "$ANDROID_HOME/build-tools/36.0.0/apksigner" verify --verbose "$apk"
+          "$ANDROID_HOME/build-tools/36.0.0/aapt" dump badging "$apk" | tee apk-metadata.txt
+          grep -q "sdkVersion:'21'" apk-metadata.txt
+          grep -q "name='io.github.verseplayzxd_droid.vojo.debug'" apk-metadata.txt
+          grep -q "launchable-activity: name='net.kdt.pojavlaunch.ui.vojo.VojoActivity'" apk-metadata.txt
+          python3 scripts/verify_debug_apk.py "$apk"
+          mkdir -p out
+          cp "$apk" out/vojo-debug.apk
+          cp apk-metadata.txt out/
+          (cd out && sha256sum vojo-debug.apk > vojo-debug.apk.sha256)
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vojo-debug-no-runtime
+          path: out/
+          if-no-files-found: error
+      - name: Archive failure reports
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vojo-build-reports
+          path: |
+            **/build/reports/
+            **/build/outputs/logs/
+          if-no-files-found: ignore

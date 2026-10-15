@@ -1,153 +1,30 @@
-<h1 align="center">Angel Aura Amethyst</h1>
+# Vojo Launcher
 
-<img src="https://github.com/AngelAuraMC/Amethyst-Android/blob/v3_openjdk/app_pojavlauncher/src/main/assets/amethyst.png" align="left" width="130" height="130" alt="Amethyst logo">
+[![Vojo debug build](https://github.com/verseplayzxd-droid/vojo-launcher/actions/workflows/vojo-debug.yml/badge.svg)](https://github.com/verseplayzxd-droid/vojo-launcher/actions/workflows/vojo-debug.yml)
 
-[![Android CI](https://github.com/AngelAuraMC/Amethyst-Android/workflows/Android%20CI/badge.svg)](https://github.com/AngelAuraMC/Amethyst-Android/actions)
-[![GitHub commit activity](https://img.shields.io/github/commit-activity/m/AngelAuraMC/Amethyst-Android)](https://github.com/AngelAuraMC/Amethyst-Android/actions)
-[![Crowdin](https://badges.crowdin.net/pojavlauncher/localized.svg)](https://crowdin.com/project/pojavlauncher)
-[![Discord](https://img.shields.io/discord/724163890803638273.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/5ptqkyZxEy)
+An Android Java Edition launcher project derived from Amethyst and PojavLauncher. **Not affiliated with Mojang or Microsoft.** You need your own copy of Java Edition to play. Game files must be obtained from their authorized sources at runtime; they are not included here.
 
-*From [Boardwalk](https://github.com/zhuowei/Boardwalk)'s ashes and [PojavLauncher](https://github.com/PojavLauncherTeam/PojavLauncher)'s ruined reputation, here comes Amethyst!*
+Milestone 2 introduces the Vojo brand, Glacier Compose interface, navigation shell, theme preferences, first-run screen, About, and bundled license readers. This is a development interface preview. Microsoft ownership checks and encrypted token storage are M3; profiles and downloads are M4; game launch integration is M5. The new shell does not connect to inherited offline login or launch paths. Unlock status remains Locked until the M9 entitlement backend is implemented.
 
-Amethyst is a launcher that allows you to play Minecraft: Java Edition on your Android and [iOS](https://github.com/AngelAuraMC/Amethyst-iOS) devices.
+See the [M2 report and device checklist](docs/milestones/M2.md), [screen layouts](docs/design/M2-layouts.md), and [rendered Glacier Home study](docs/design/previews/glacier-home-refined.png). The study uses example data; the app displays honest empty states. Dark and light Compose previews are included in the UI source.
 
-For more details, check out our [wiki](https://wiki.angelauramc.dev)!
+## Build
 
-## Table of Contents
+Use JDK 21 for Gradle and make a JDK 8 toolchain available for MioLibPatcher. The repository declares Gradle 9.6.1, AGP 9.3.1, compile SDK 37, target SDK 34 and minSdk 21. Built-in Kotlin and its Compose compiler are 2.2.10; KSP is 2.3.6 and Hilt is 2.59.2. No Kotlin source-set compatibility override is required.
 
-* [Introduction](#introduction)
-* [Getting Amethyst](#getting-amethyst)
-* [Building](#building)
-    * [Quick Build (Recommended)](#quick-build-recommended)
-    * [Detailed Build](#detailed-build)
-* [Current Status](#current-status)
-* [Known Issues](#known-issues)
-* [FAQ](#faq)
-* [Contributing](#contributing)
-* [Support](#support)
-* [License](#license)
-* [Credits & Dependencies](#credits--dependencies)
-* [Roadmap](#roadmap)
+Initialize the two pinned modules, then build:
 
-## Introduction
+```sh
+git -c url.https://github.com/.insteadOf=git@github.com: submodule update --init --recursive MioLibPatcher androidnsbypass
+./gradlew :app_pojavlauncher:assembleDebug -Dorg.gradle.java.installations.paths=/path/to/jdk8
+```
 
-* Amethyst is a Minecraft: Java Edition launcher for Android and iOS based on [Boardwalk](https://github.com/zhuowei/Boardwalk) and [PojavLauncher](https://github.com/PojavLauncherTeam/PojavLauncher)
-* This launcher can launch almost all available Minecraft versions ranging from rd-132211 to 26.3-snapshot-1.
-* Modding via Forge and Fabric are also supported.
-* This repository contains source code for Android. For iOS/iPadOS, check out [Amethyst-iOS](https://github.com/AngelAuraMC/Amethyst-iOS).
+Use `gradlew.bat` on Windows. Native tools require a workspace path without spaces; the [M2 report](docs/milestones/M2.md) contains the verified Windows alias and low-memory build command. Required SDK packages are listed in [CI](.github/workflows/vojo-debug.yml). The APK is `app_pojavlauncher/build/outputs/apk/debug/app_pojavlauncher-debug.apk`, application ID `io.github.verseplayzxd_droid.vojo.debug`. Internal packages and JNI names remain unchanged.
 
-## Getting Amethyst
+CI builds and verifies a debug APK directly from source, without a release signing secret or downloading opaque runtime artifacts from another workflow. No Android Java runtime is bundled in this M2 build; gameplay acceptance is pending M5. Install/startup on an ARM64 phone: **test later**.
 
-You can get Amethyst via two methods:
+## License and credits
 
-1. **Releases:** Download the latest prebuilt app from [nightly.link](https://nightly.link/AngelAuraMC/Amethyst-Android/workflows/android/v3_openjdk/app-debug%20%28recommended%29.zip) or select an older version from our [automatic builds](https://github.com/AngelAuraMC/Amethyst-Android/actions).
-2. **Build from Source:** Follow the [building instructions](#building) below.
+The original [LGPL license](LICENSE) and all existing notices remain in place. Covered changes are available in this repository; no component is relicensed. The incorporated [GPL text](licenses/GPL-3.0.txt) and [Apache text](licenses/Apache-2.0.txt) are also bundled. Read [notices](docs/licenses/NOTICE.md) and the **[Unresolved licenses](docs/licenses/UNRESOLVED.md)** inventory before release. The current development APK has not been cleared for public distribution. The [privacy notice](docs/licenses/PRIVACY-DRAFT.txt) is a draft requiring owner review.
 
-## Building
-
-### Quick Build (Recommended)
-
-The easiest way to build Amethyst is to use the pre-built JREs provided by our CI.
-
-1. Clone the repository: `git clone --recursive https://github.com/AngelAuraMC/Amethyst-Android.git`
-2. Build the launcher: `./gradlew :app_pojavlauncher:assembleDebug` (Use `gradlew.bat` on Windows)
-
-The built APK will be located in `app_pojavlauncher/build/outputs/apk/debug/`.
-
-### Detailed Build
-
-If you need more control over the build process, follow these steps:
-
-1. **Java Runtime Environment (JRE):** Download the `jre8-pojav` artifact from our [CI auto builds](https://github.com/AngelAuraMC/openjdk-build-multiarch/actions).  This package contains pre-built JREs for all supported architectures.  If you need to build the JRE yourself, follow the instructions in the [android-openjdk-build-multiarch](https://github.com/AngelAuraMC/openjdk-build-multiarch) repository.
-
-2. **LWJGL:** The build instructions for the custom LWJGL are available over the [LWJGL repository](https://github.com/AngelAuraMC/lwjgl3).
-
-3. **Language List:** Because languages are auto-added by Crowdin, you need to run the language list generator before building. In the project directory, run:
-   * Linux/macOS:
-     ```bash
-     chmod +x scripts/languagelist_updater.sh
-     bash scripts/languagelist_updater.sh
-     ```
-   * Windows:
-     ```batch
-     scripts\languagelist_updater.bat
-     ```
-
-4. **Build GLFW stub:** `./gradlew :jre_lwjgl3glfw:build`
-
-5. **Build the launcher:** `./gradlew :app_pojavlauncher:assembleDebug` (Replace `gradlew` with `gradlew.bat` on Windows).
-
-## Current Status
-
-* [x] OpenJDK 8 Mobile port: ARM32, ARM64, x86, x86_64
-* [x] OpenJDK 17 Mobile port: ARM32, ARM64, x86, x86_64
-* [x] OpenJDK 21 Mobile port: ARM32, ARM64, x86, x86_64
-* [x] Headless mod installer
-* [x] Mod installer with GUI
-* [x] OpenGL in OpenJDK environment
-* [x] OpenAL (works on most devices)
-* [x] Support for Minecraft 1.12.2 and below
-* [x] Support for Minecraft 1.13 and above
-* [x] Support for Minecraft 1.17 (22w13a) and above
-* [x] Game surface zooming
-* [x] New input pipe rewritten to native code
-* [x] Rewritten entire controls system
-* [ ] More to come!
-
-## Known Issues
-
-See our [issue tracker](https://github.com/AngelAuraMC/Amethyst-Android/issues) for a list of known issues and their current status.
-
-## FAQ
-
-See our [wiki](https://wiki.angelauramc.dev/) for more information.
-
-## Contributing
-
-Contributions are welcome! We welcome any type of contribution, not only code. For example, you can help improve the [wiki](https://github.com/AngelAuraMC/angelauramc.github.io/), contribute to the [translations](https://crowdin.com/project/pojavlauncher), or submit bug reports and feature requests.
-
-Any code change should be submitted as a pull request. The description should explain what the code does and give steps to execute it.
-
-## Support
-
-For support, please join our [Discord server](https://discord.gg/5ptqkyZxEy).
-
-## License
-
-Amethyst is licensed under [GNU LGPLv3](https://github.com/AngelAuraMC/Amethyst-Android/blob/v3_openjdk/LICENSE).
-
-## Credits & Dependencies
-
-* [Boardwalk](https://github.com/zhuowei/Boardwalk) (JVM Launcher): Unknown License/[Apache License 2.0](https://github.com/zhuowei/Boardwalk/blob/master/LICENSE) or GNU GPLv2.
-* [PojavLauncher](https://github.com/PojavLauncherTeam/PojavLauncher): [GLGPL](https://github.com/PojavLauncherTeam/PojavLauncher/blob/v3_openjdk/LICENSE)
-* Android Support Libraries: [Apache License 2.0](https://android.googlesource.com/platform/prebuilts/maven_repo/android/+/master/NOTICE.txt).
-* [GL4ES](https://github.com/AngelAuraMC/gl4es): [MIT License](https://github.com/ptitSeb/gl4es/blob/master/LICENSE).
-* [MobileGlues](https://github.com/MobileGL-Dev/MobileGlues): [LGPL-2.1 License](https://github.com/MobileGL-Dev/MobileGlues/blob/dev-es/LICENSE).
-* [Krypton Wrapper](https://github.com/BZLZHH/NG-GL4ES): [MIT License](https://github.com/BZLZHH/NG-GL4ES/blob/main/LICENSE)
-* [ANGLE](https://chromium.googlesource.com/angle/angle): [All Rights Reserved](app_pojavlauncher/src/main/assets/licenses/ANGLE_LICENSE).
-* [OpenJDK](https://github.com/AngelAuraMC/openjdk-multiarch-jdk8u): [GNU GPLv2 License](https://openjdk.java.net/legal/gplv2+ce.html).
-* [LWJGL3](https://github.com/AngelAuraMC/lwjgl3): [BSD-3 License](https://github.com/LWJGL/lwjgl3/blob/master/LICENSE.md).
-* [LWJGLX](https://github.com/AngelAuraMC/lwjglx) (LWJGL2 API compatibility layer for LWJGL3): unknown license.
-* [Mesa 3D Graphics Library](https://gitlab.freedesktop.org/mesa/mesa): [MIT License](https://docs.mesa3d.org/license.html).
-* [bhook](https://github.com/bytedance/bhook) (Used for exit code trapping): [MIT license](https://github.com/bytedance/bhook/blob/main/LICENSE).
-* [libepoxy](https://github.com/anholt/libepoxy): [MIT License](https://github.com/anholt/libepoxy/blob/master/COPYING).
-* [virglrenderer](https://github.com/AngelAuraMC/virglrenderer): [MIT License](https://gitlab.freedesktop.org/virgl/virglrenderer/-/blob/master/COPYING).
-* [OpenAL-Soft](https://github.com/kcat/openal-soft): [GNU GPLv2](app_pojavlauncher/src/main/assets/licenses/OPENAL-SOFT_GPL2)
-  * [oboe](https://github.com/google/oboe): [Apache License 2.0](app_pojavlauncher/src/main/assets/licenses/OBOE_APACHE2).
-  * [pfffft](https://bitbucket.org/jpommier/pffft/src/master/): [ARR](app_pojavlauncher/src/main/assets/licenses/PFFFT_LICENSE)
-* [SDL3](https://github.com/libsdl-org/SDL): [zlib License](https://github.com/libsdl-org/SDL/blob/main/LICENSE.txt)
-* [sdl2-compat](https://github.com/libsdl-org/sdl2-compat): [zlib License](https://github.com/libsdl-org/sdl2-compat/blob/main/LICENSE.txt)
-* Thanks to [MCHeads](https://mc-heads.net) for providing Minecraft avatars.
-
-## Roadmap
-
-We are currently focusing on:
-
-* Exploring new rendering technologies.
-
-Future plans include:
-
-* Improving stability and performance.
-* Enhancing the mod installation experience.
-
-We welcome community feedback and suggestions for our roadmap.  Please feel free to open a feature request in our [issue tracker](https://github.com/AngelAuraMC/Amethyst-Android/issues).
+Thanks to Amethyst, PojavLauncher, Boardwalk and all contributors and dependency authors. The complete inherited [README and credits](docs/upstream/README.md) and [original workflow](docs/upstream/android-ci.yml) are retained for provenance; their feature and release claims describe upstream, not this Vojo milestone.
