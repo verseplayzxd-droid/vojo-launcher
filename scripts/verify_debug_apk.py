@@ -5,6 +5,7 @@ Metadata (application ID, launch activity and minSdk) and signatures are checked
 separately with Android's aapt and apksigner tools.
 """
 import hashlib
+import io
 import struct
 import sys
 from pathlib import Path
@@ -39,7 +40,17 @@ with ZipFile(apk) as archive:
             raise SystemExit(f"Not a little-endian 64-bit AArch64 ELF: {library}")
     if "res/font/minecraft_ten.ttf" in archive.namelist():
         raise SystemExit("Inherited Minecraft-style font must not ship")
+    for name in archive.namelist():
+        if name.endswith('.dex'):
+            dex = archive.read(name)
+            if any(marker in dex for marker in (b'Lorg/junit/', b'Ljunit/', b'Lorg/hamcrest/')):
+                raise SystemExit(f"Test-framework classes or references found in APK: {name}")
+        if name.endswith('.jar'):
+            with ZipFile(io.BytesIO(archive.read(name))) as nested:
+                if any(entry.endswith('.class') and entry.startswith(('org/junit/', 'junit/', 'org/hamcrest/')) for entry in nested.namelist()):
+                    raise SystemExit(f"Test-framework classes found in nested support JAR: {name}")
 print(f"PASS: {len(documents)} verbatim legal documents; {len(arm64)} AArch64 ELF libraries; excluded inherited pixel font")
+print("PASS: JUnit/Hamcrest absent from packaged DEX files and nested support JARs")
 print(f"APK bytes: {apk.stat().st_size}")
 print(f"SHA-256: {hashlib.sha256(apk.read_bytes()).hexdigest()}")
 print("Physical ARM64 installation, startup, graphics and accessibility: test later")

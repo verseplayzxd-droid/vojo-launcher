@@ -1,0 +1,10 @@
+// Local artifact inspection only. Do not change the project's release signing.
+gradle.beforeProject { p ->
+    if (p.path == ':app_pojavlauncher') {
+        p.plugins.withId('com.android.application') {
+            p.androidComponents.finalizeDsl { extension ->
+                extension.buildTypes.getByName('release').signingConfig = null
+            }
+        }
+    }
+}

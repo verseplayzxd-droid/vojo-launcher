@@ -43,9 +43,11 @@ jobs:
           test -x "$vojo_sdkmanager"
           "$vojo_sdkmanager" 'platforms;android-37.0' 'platforms;android-36.1' 'build-tools;36.0.0' 'ndk;27.3.13750724' 'ndk;28.2.13676358' 'cmake;3.22.1'
       - name: Build source debug APK
+        env:
+          VOJO_MICROSOFT_CLIENT_ID: ${{ vars.VOJO_MICROSOFT_CLIENT_ID }}
         run: |
           chmod +x gradlew
-          ./gradlew :app_pojavlauncher:assembleDebug --no-daemon --stacktrace "-Dorg.gradle.java.installations.paths=$VOJO_JDK8"
+          ./gradlew :app_pojavlauncher:testDebugUnitTest :app_pojavlauncher:assembleDebug :app_pojavlauncher:verifyAuthDependencyScopes --init-script scripts/verification/auth-dependencies.init.gradle --no-daemon --stacktrace "-Dorg.gradle.java.installations.paths=$VOJO_JDK8"
       - name: Verify APK and checksum
         run: |
           apk=app_pojavlauncher/build/outputs/apk/debug/app_pojavlauncher-debug.apk
