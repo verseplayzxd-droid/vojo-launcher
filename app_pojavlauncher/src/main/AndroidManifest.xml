@@ -32,8 +32,8 @@
         android:allowNativeHeapPointerTagging="false"
         android:appCategory="game"
         android:hasFragileUserData="true"
-        android:icon="@mipmap/ic_launcher"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:icon="@mipmap/vojo_launcher"
+        android:roundIcon="@mipmap/vojo_launcher"
         android:isGame="true"
         android:label="@string/app_name"
         android:process=":launcher"
@@ -48,7 +48,8 @@
             android:value="ratio_float" />
 
         <activity
-            android:name=".TestStorageActivity"
+            android:name=".ui.vojo.VojoActivity"
+            android:theme="@style/VojoShellTheme"
             android:exported="true"
             android:label="@string/app_short_name"
             android:launchMode="singleTop">
@@ -58,6 +59,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".TestStorageActivity"
+            android:exported="false" />
         <activity
             android:name=".LauncherActivity"
             android:label="@string/app_short_name"

@@ -44,7 +44,7 @@ def getVersionName = {
             return ("LOCAL-" + "${getDate()}")
         }else {
             // Used by github actions
-            TAG_STRING =  'amethyst-legacy-' + "${getDate()}" + "-" + TAG_PART_COMMIT.toString().trim()
+            TAG_STRING =  'vojo-' + "${getDate()}" + "-" + TAG_PART_COMMIT.toString().trim()
         }
 
     }
@@ -125,8 +125,8 @@ android {
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.customDebug
-            resValue "string", "app_name", "Amethyst (Debug)"
-            resValue "string", "app_short_name", "Amethyst (Debug)"
+            resValue "string", "app_name", "Vojo (Debug)"
+            resValue "string", "app_short_name", "Vojo (Debug)"
             resValue 'string', 'application_package', 'io.github.verseplayzxd_droid.vojo.debug'
             resValue 'string', 'storageProviderAuthorities', 'io.github.verseplayzxd_droid.vojo.scoped.gamefolder.debug'
             resValue 'string', 'shareProviderAuthority', 'io.github.verseplayzxd_droid.vojo.scoped.controlfolder.debug'
@@ -149,8 +149,8 @@ android {
             // defaultConfig already set
             // multiDexEnabled = true
             // debuggable = true
-            resValue "string", "app_name", "Amethyst"
-            resValue "string", "app_short_name", "Amethyst"
+            resValue "string", "app_name", "Vojo"
+            resValue "string", "app_short_name", "Vojo"
             resValue 'string', 'storageProviderAuthorities', 'io.github.verseplayzxd_droid.vojo.scoped.gamefolder'
             resValue 'string', 'shareProviderAuthority', 'io.github.verseplayzxd_droid.vojo.scoped.controlfolder'
             resValue 'string', 'application_package', 'io.github.verseplayzxd_droid.vojo'
