@@ -76,7 +76,11 @@ fun AccountsScreen(state: AccountsState, online: Boolean, signIn: () -> Unit, ca
         if (!online) StateNotice(Phase.OFFLINE)
         if (state.loading) StateNotice(Phase.LOADING)
         state.problem?.let {
-            InfoCard(if (it == AuthProblem.APPROVAL_PENDING) "Waiting for app approval" else "Sign-in information", it.message)
+            InfoCard(when (it) {
+                AuthProblem.NOT_CONFIGURED -> "Sign-in not configured yet"
+                AuthProblem.APPROVAL_PENDING -> "Waiting for app approval"
+                else -> "Sign-in information"
+            }, it.message)
         }
         if (state.busy || state.waitingForBrowser) {
             Text(state.stage, style = MaterialTheme.typography.titleMedium)

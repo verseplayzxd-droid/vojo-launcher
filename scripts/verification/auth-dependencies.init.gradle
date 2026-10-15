@@ -1,6 +1,6 @@
 // Resolve dependency metadata only; this does not change application dependencies.
-gradle.projectsEvaluated {
-    def app = gradle.rootProject.project(':app_pojavlauncher')
+gradle.beforeProject { app ->
+    if (app.path != ':app_pojavlauncher') return
     app.tasks.register('verifyAuthDependencyScopes') {
         doLast {
             def modules = { config ->
