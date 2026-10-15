@@ -22,7 +22,8 @@ jobs:
         with:
           submodules: false
       - name: Fetch pinned build modules over HTTPS
-        run: git -c url.https://github.com/.insteadOf=git@github.com: submodule update --init --recursive MioLibPatcher androidnsbypass
+        run: |
+          git -c url.https://github.com/.insteadOf=git@github.com: submodule update --init --recursive MioLibPatcher androidnsbypass
       - name: Set up Java 8 compiler
         uses: actions/setup-java@v3
         with:
