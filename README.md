@@ -4,7 +4,7 @@
 
 An Android Java Edition launcher project derived from Amethyst and PojavLauncher. **Not affiliated with Mojang or Microsoft.** You need your own copy of Java Edition to play. Game files must be obtained from their authorized sources at runtime; they are not included here.
 
-Milestone 2 introduces the Vojo brand, Glacier Compose interface, navigation shell, theme preferences, first-run screen, About, and bundled license readers. This is a development interface preview. Microsoft ownership checks and encrypted token storage are M3; profiles and downloads are M4; game launch integration is M5. The new shell does not connect to inherited offline login or launch paths. Unlock status remains Locked until the M9 entitlement backend is implemented.
+Milestone 2 introduced the Vojo brand and Glacier Compose shell. Milestone 3 adds Microsoft browser sign-in with PKCE, Java entitlement/profile checks, encrypted token storage and saved account selection. Supply your own approved client ID using the [Azure registration guide](docs/auth/AZURE-REGISTRATION.md); the [Mojang review draft](docs/auth/MOJANG-REVIEW-DRAFT.md) is ready to customize. An unconfigured build cannot sign in. Legacy borrowed-ID, plaintext and offline/demo auth paths are disabled. Profiles/downloads are M4; game launch integration is M5. Unlock status remains Locked until the M9 entitlement backend is implemented.
 
 See the [M2 report and device checklist](docs/milestones/M2.md), [screen layouts](docs/design/M2-layouts.md), and [rendered Glacier Home study](docs/design/previews/glacier-home-refined.png). The study uses example data; the app displays honest empty states. Dark and light Compose previews are included in the UI source.
 

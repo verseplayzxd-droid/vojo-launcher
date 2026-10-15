@@ -2,9 +2,15 @@ Vojo Launcher privacy information — DRAFT
 
 This notice requires owner review and contact details before public release.
 
-The new Vojo interface stores appearance choices and the first-run confirmation locally on this device. This milestone adds no advertising or analytics service. The interface does not ask for account credentials.
+Vojo stores appearance choices and the first-run confirmation locally. Microsoft sign-in opens your system browser and contacts Microsoft's identity service, Xbox Live, XSTS and Minecraft Services. Those services receive the information needed to authenticate your account, check Java Edition access and retrieve your Java profile. Passwords are entered only on Microsoft's sign-in page, never into Vojo.
 
-The inherited launcher contains account, download, mod and game-runtime features. Their security and data flows are being reviewed before use in the finished Vojo product. This development build is not a representation that those inherited features satisfy the final privacy policy.
+Vojo saves your Java profile name/ID, Microsoft refresh token and Minecraft access token in an app-private encrypted credential vault backed by Android Keystore. The vault is excluded from cloud backup and device transfer. Intermediate Microsoft access, Xbox Live and XSTS tokens are used in memory during authentication. They are not logged, sent to analytics, shared with a Vojo backend or used to fetch avatars from third-party skin services. A short-lived encrypted PKCE/state record allows the browser sign-in to return to the app. Android/browser system diagnostics remain outside Vojo's control.
+
+Saved account cards show previous verification. A fresh online entitlement/profile check is required before a launch session can be issued. Removing an account deletes its local saved credential record; resetting sign-ins removes all vault records and keys. This does not delete your Microsoft account, sign you out of your browser, or revoke every Microsoft session on other devices. Revoke the app's access through your Microsoft account if needed.
+
+Legacy borrowed-ID, embedded-browser, plaintext-save and offline/demo sign-in paths are disabled. Legacy account files are not imported or treated as authorization. If you previously used an experimental inherited sign-in build, revoke that app's access and remove its old account files/app data separately; M3 does not silently erase existing user files.
+
+This development build adds no advertising or analytics SDK and no Vojo authentication backend. Download, mod and game-runtime integration is scheduled for later milestones; those data flows require further review before release. The ad-unlock roadmap is not implemented in this build.
 
 Opening the source-code link leaves the app and contacts GitHub. License texts and this notice can be read offline.
 
