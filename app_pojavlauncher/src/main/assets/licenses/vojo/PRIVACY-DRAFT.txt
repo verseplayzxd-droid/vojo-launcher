@@ -1,0 +1,14 @@
+Vojo Launcher privacy information — DRAFT
+
+This notice requires owner review and contact details before public release.
+
+The new Vojo interface stores appearance choices and the first-run confirmation locally on this device. This milestone adds no advertising or analytics service. The interface does not ask for account credentials.
+
+The inherited launcher contains account, download, mod and game-runtime features. Their security and data flows are being reviewed before use in the finished Vojo product. This development build is not a representation that those inherited features satisfy the final privacy policy.
+
+Opening the source-code link leaves the app and contacts GitHub. License texts and this notice can be read offline.
+
+Source: https://github.com/verseplayzxd-droid/vojo-launcher
+Privacy contact: not yet supplied by the owner.
+
+Not affiliated with Mojang or Microsoft.
