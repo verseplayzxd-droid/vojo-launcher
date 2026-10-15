@@ -81,7 +81,7 @@ fun FirstRunScreen(saving: Boolean, error: String?, continueAction: () -> Unit, 
     Page("Welcome to Vojo") {
         VojoLogo(Modifier.size(72.dp))
         InfoCard("Your game. Your adventure.", "You need your own copy of Java Edition to play")
-        Text("This build previews the new launcher interface. Microsoft sign-in and ownership checks are coming in Milestone 3.")
+        Text("Sign in securely with Microsoft. Vojo checks Java Edition ownership and your Java profile before saving an account.")
         if (error != null) Text(error, color = MaterialTheme.colorScheme.error)
         Button(continueAction, Modifier.fillMaxWidth().heightIn(min = 56.dp), enabled = !saving) {
             Text(if (saving) "Saving…" else "Continue")
@@ -93,7 +93,7 @@ fun FirstRunScreen(saving: Boolean, error: String?, continueAction: () -> Unit, 
 
 @Composable
 fun SettingsScreen(mode: ThemeMode, error: String?, change: (ThemeMode) -> Unit, about: () -> Unit,
-    privacy: () -> Unit, licenses: () -> Unit) {
+    privacy: () -> Unit, licenses: () -> Unit, accounts: () -> Unit = {}) {
     Page("Settings") {
         SectionTitle("Appearance")
         Text("Choose how Vojo looks. Your choice stays on this device.")
@@ -107,7 +107,8 @@ fun SettingsScreen(mode: ThemeMode, error: String?, change: (ThemeMode) -> Unit,
             }
         } }
         if (error != null) Text(error, color = MaterialTheme.colorScheme.error)
-        InfoCard("More settings are on their way", "Accounts arrive in M3. Storage, runtime, renderer and log tools will follow in their planned milestones.")
+        OutlinedButton(accounts, Modifier.fillMaxWidth().heightIn(min = 48.dp)) { Text("Microsoft accounts") }
+        InfoCard("More settings are on their way", "Storage, runtime, renderer and log tools will follow in their planned milestones.")
         OutlinedButton(about, Modifier.fillMaxWidth().heightIn(min = 48.dp)) { Text("About Vojo") }
         OutlinedButton(privacy, Modifier.fillMaxWidth().heightIn(min = 48.dp)) { Text("Privacy notice · draft") }
         OutlinedButton(licenses, Modifier.fillMaxWidth().heightIn(min = 48.dp)) { Text("Open-source licenses") }

@@ -28,7 +28,10 @@
         android:resource="@xml/game_mode_config" />
     <application
         android:name=".PojavApplication"
-        android:allowBackup="true"
+        android:allowBackup="false"
+        android:fullBackupContent="@xml/vojo_backup_rules"
+        android:dataExtractionRules="@xml/vojo_data_extraction_rules"
+        android:usesCleartextTraffic="false"
         android:allowNativeHeapPointerTagging="false"
         android:appCategory="game"
         android:hasFragileUserData="true"
@@ -62,6 +65,19 @@
         <activity
             android:name=".TestStorageActivity"
             android:exported="false" />
+        <activity
+            android:name=".auth.AuthRedirectActivity"
+            android:exported="true"
+            android:noHistory="true"
+            android:excludeFromRecents="true"
+            android:theme="@style/VojoShellTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="${vojoAuthScheme}" android:host="oauth2redirect" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".LauncherActivity"
             android:label="@string/app_short_name"

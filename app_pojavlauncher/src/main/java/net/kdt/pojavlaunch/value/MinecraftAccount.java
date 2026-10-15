@@ -58,8 +58,7 @@ public class MinecraftAccount {
     }
     
     public String save(String outPath) throws IOException {
-        Tools.write(outPath, Tools.GLOBAL_GSON.toJson(this));
-        return username;
+        throw new IOException("Legacy plaintext account storage is disabled. Use Vojo Accounts.");
     }
     
     public String save() throws IOException {
@@ -67,36 +66,12 @@ public class MinecraftAccount {
     }
     
     public static MinecraftAccount parse(String content) throws JsonSyntaxException {
-        return Tools.GLOBAL_GSON.fromJson(content, MinecraftAccount.class);
+        throw new JsonSyntaxException("Legacy account import is disabled. Sign in using Vojo Accounts.");
     }
     @Nullable
     public static MinecraftAccount load(String name) {
-        if(!accountExists(name)) return null;
-        try {
-            MinecraftAccount acc = parse(Tools.read(Tools.DIR_ACCOUNT_NEW + "/" + name + ".json"));
-            if (acc.accessToken == null) {
-                acc.accessToken = "0";
-            }
-            if (acc.clientToken == null) {
-                acc.clientToken = "0";
-            }
-            if (acc.profileId == null) {
-                acc.profileId = "00000000-0000-0000-0000-000000000000";
-            }
-            if (acc.username == null) {
-                acc.username = "0";
-            }
-            if (acc.selectedVersion == null) {
-                acc.selectedVersion = "1.7.10";
-            }
-            if (acc.msaRefreshToken == null) {
-                acc.msaRefreshToken = "0";
-            }
-            return acc;
-        } catch(NullPointerException | IOException | JsonSyntaxException e) {
-            Log.e(MinecraftAccount.class.getName(), "Caught an exception while loading the profile",e);
-            return null;
-        }
+        // Never trust legacy plaintext, offline or demo account files.
+        return null;
     }
 
     public Bitmap getSkinFace(){

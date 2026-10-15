@@ -32,9 +32,18 @@ import net.kdt.pojavlaunch.R
 
 @AndroidEntryPoint
 class VojoActivity : ComponentActivity() {
+    private var accountRequest by mutableStateOf(0)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent { VojoShell() }
+        if (intent.getBooleanExtra("vojo.openAccounts", false)) accountRequest++
+        intent.removeExtra("vojo.openAccounts")
+        setContent { VojoShell(accountRequest) }
+    }
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        if (intent.getBooleanExtra("vojo.openAccounts", false)) accountRequest++
+        intent.removeExtra("vojo.openAccounts")
     }
 }
 
@@ -44,11 +53,12 @@ private enum class Destination(val label: String, val icon: Int) {
 }
 
 @Composable
-private fun VojoShell(shell: ShellViewModel = viewModel()) {
+private fun VojoShell(accountRequest: Int, shell: ShellViewModel = viewModel()) {
     val settings by shell.state.collectAsStateWithLifecycle()
     var destination by rememberSaveable { mutableStateOf(Destination.HOME.name) }
     var page by rememberSaveable { mutableStateOf("") }
     var dialog by rememberSaveable { mutableStateOf("") }
+    LaunchedEffect(accountRequest) { if (accountRequest > 0) page = "accounts" }
     val configuration = LocalConfiguration.current
     val rail = configuration.screenWidthDp >= 600 || configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
     val context = LocalContext.current
@@ -65,7 +75,7 @@ private fun VojoShell(shell: ShellViewModel = viewModel()) {
                         VojoIcon(R.drawable.vojo_back, "Back")
                     } else VojoLogo()
                     Text("Vojo", Modifier.weight(1f).padding(start = 8.dp), style = MaterialTheme.typography.titleLarge)
-                    IconButton({ dialog = "Microsoft sign-in and ownership checks arrive in Milestone 3. No account is connected in this interface preview." },
+                    IconButton({ page = "accounts" },
                         Modifier.sizeIn(minWidth = 48.dp, minHeight = 48.dp)) { VojoIcon(R.drawable.vojo_account, "Account") }
                 }
                 Row(Modifier.weight(1f)) {
@@ -84,8 +94,9 @@ private fun VojoShell(shell: ShellViewModel = viewModel()) {
                                 val vm: FirstRunViewModel = viewModel()
                                 val error by vm.error.collectAsStateWithLifecycle()
                                 val saving by vm.saving.collectAsStateWithLifecycle()
-                                FirstRunScreen(saving, error, vm::continueToHome, { openDocument("privacy") }, { openDocument("notice") })
+                                FirstRunScreen(saving, error, { vm.continueToHome(); page = "accounts" }, { openDocument("privacy") }, { openDocument("notice") })
                             }
+                            page == "accounts" -> AccountsRoute()
                             page == "about" -> {
                                 val vm: AboutViewModel = viewModel()
                                 AboutScreen({
@@ -119,7 +130,7 @@ private fun VojoShell(shell: ShellViewModel = viewModel()) {
                                     Destination.SETTINGS -> {
                                         val vm: SettingsViewModel = viewModel()
                                         val error by vm.error.collectAsStateWithLifecycle()
-                                        SettingsScreen(settings.value.theme, error, vm::theme, { page = "about" }, { openDocument("privacy") }, { openDocument("notice") })
+                                        SettingsScreen(settings.value.theme, error, vm::theme, { page = "about" }, { openDocument("privacy") }, { openDocument("notice") }, accounts = { page = "accounts" })
                                     }
                                 }
                             }

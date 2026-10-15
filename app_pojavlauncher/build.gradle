@@ -7,6 +7,13 @@ plugins {
 
 static def getDate() { return new Date().format('yyyyMMdd') }
 
+// Public identifier supplied by Vojo's owner. Never fall back to another app's ID.
+def vojoMicrosoftClientId = providers.gradleProperty('vojoMicrosoftClientId')
+        .orElse(providers.environmentVariable('VOJO_MICROSOFT_CLIENT_ID')).getOrElse('').trim()
+if (!vojoMicrosoftClientId.isEmpty() && !(vojoMicrosoftClientId ==~ /[0-9a-fA-F]{8}(-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}/)) {
+    throw new GradleException('vojoMicrosoftClientId / VOJO_MICROSOFT_CLIENT_ID must be your own Application (client) ID GUID, or omitted for an unconfigured UI build.')
+}
+
 def getVersionName = {
     // Get the last version tag, as well as the short head of the last commit
     String TAG = ""
@@ -109,6 +116,9 @@ android {
         versionCode 10000000
         versionName getVersionName()
         multiDexEnabled true //important
+        buildConfigField 'String', 'MICROSOFT_CLIENT_ID', '"' + vojoMicrosoftClientId + '"'
+        buildConfigField 'String', 'MICROSOFT_REDIRECT_URI', '"io.github.verseplayzxd-droid.vojo://oauth2redirect"'
+        manifestPlaceholders.vojoAuthScheme = 'io.github.verseplayzxd-droid.vojo'
         resValue 'string', 'curseforge_api_key', getCFApiKey()
         externalNativeBuild {
             ndkBuild {
@@ -121,6 +131,8 @@ android {
     buildTypes {
         debug {
             applicationIdSuffix '.debug'
+            buildConfigField 'String', 'MICROSOFT_REDIRECT_URI', '"io.github.verseplayzxd-droid.vojo.debug://oauth2redirect"'
+            manifestPlaceholders.vojoAuthScheme = 'io.github.verseplayzxd-droid.vojo.debug'
             minifyEnabled false
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -221,6 +233,8 @@ afterEvaluate {
 }
 
 dependencies {
+    // Approved M3 test-only dependency; never packaged in an application APK.
+    testImplementation 'junit:junit:4.13.2'
     // API 21 lane, approved for M2. Do not update the BOM without checking minSdk.
     implementation platform('androidx.compose:compose-bom:2025.07.00')
     implementation 'androidx.activity:activity-compose:1.9.3'
